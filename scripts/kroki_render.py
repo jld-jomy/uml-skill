@@ -6,11 +6,11 @@ server running locally, so nothing is sent to the public kroki.io service.
 
 Start the server once with:
 
-    docker run -d --name kroki -p 8000:8000 yuzutech/kroki
+    docker run -d --name kroki -p 8090:8000 yuzutech/kroki
 
 (or `docker start kroki` if the container already exists).
 
-The server URL defaults to $KROKI_URL, or http://localhost:8000 when unset.
+The server URL defaults to $KROKI_URL, or http://localhost:8090 when unset.
 """
 
 from __future__ import annotations
@@ -21,10 +21,10 @@ import sys
 import urllib.error
 import urllib.request
 
-DEFAULT_BASE = os.environ.get("KROKI_URL", "http://localhost:8000")
+DEFAULT_BASE = os.environ.get("KROKI_URL", "http://localhost:8090")
 DOCKER_HINT = (
     "Start it with:  docker start kroki 2>/dev/null || "
-    "docker run -d --name kroki -p 8000:8000 yuzutech/kroki"
+    "docker run -d --name kroki -p 8090:8000 yuzutech/kroki"
 )
 
 

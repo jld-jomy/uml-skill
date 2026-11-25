@@ -3,7 +3,7 @@
 
 Use this when uml-mcp is not connected and you only need a Kroki URL. The
 base defaults to the local Docker Kroki server ($KROKI_URL or
-http://localhost:8000), so the URL only works on this machine; to get a file,
+http://localhost:8090), so the URL only works on this machine; to get a file,
 use kroki_render.py instead. The
 uml-mcp server's generate_uml tool maps logical diagram_type values, applies
 themes, and prepares PlantUML/Mermaid for backends; this script sends **raw**
@@ -22,7 +22,7 @@ import os
 import sys
 import zlib
 
-DEFAULT_BASE = os.environ.get("KROKI_URL", "http://localhost:8000")
+DEFAULT_BASE = os.environ.get("KROKI_URL", "http://localhost:8090")
 
 
 def encode_for_kroki(text: str) -> str:

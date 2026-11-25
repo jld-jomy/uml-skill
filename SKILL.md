@@ -160,10 +160,10 @@ Render through the **local Kroki Docker server**. Never send diagram source to t
 1. Save the source to a file next to where it belongs (e.g. `docs/diagrams/<name>.puml`, `.mmd`, `.d2`).
 2. Make sure the server is running (idempotent):
    ```bash
-   docker start kroki 2>/dev/null || docker run -d --name kroki -p 8000:8000 yuzutech/kroki
+   docker start kroki 2>/dev/null || docker run -d --name kroki -p 8090:8000 yuzutech/kroki
    ```
    The core backends (plantuml, c4plantuml, d2, graphviz, ditaa, …) are in this one image. **Mermaid**, **BPMN**, **Excalidraw** and **diagrams.net** need companion containers (`yuzutech/kroki-mermaid`, `yuzutech/kroki-bpmn`, …); see the Kroki install docs if one of those returns an error.
-3. Render with **`scripts/kroki_render.py`** (stdlib only; POSTs to `$KROKI_URL`, default `http://localhost:8000`):
+3. Render with **`scripts/kroki_render.py`** (stdlib only; POSTs to `$KROKI_URL`, default `http://localhost:8090`):
    ```bash
    python3 <skill-dir>/scripts/kroki_render.py -t plantuml docs/diagrams/<name>.puml   # writes <name>.svg
    python3 <skill-dir>/scripts/kroki_render.py -t mermaid -o out.png diagram.mmd

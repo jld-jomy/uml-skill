@@ -1,11 +1,11 @@
 # uml-skill scripts
 
-Small **stdlib-only** helpers agents can run without installing uml-mcp. Both talk to a **local Kroki server in Docker** (`$KROKI_URL`, default `http://localhost:8000`), never the public kroki.io.
+Small **stdlib-only** helpers agents can run without installing uml-mcp. Both talk to a **local Kroki server in Docker** (`$KROKI_URL`, default `http://localhost:8090`), never the public kroki.io.
 
 Start the server once:
 
 ```bash
-docker start kroki 2>/dev/null || docker run -d --name kroki -p 8000:8000 yuzutech/kroki
+docker start kroki 2>/dev/null || docker run -d --name kroki -p 8090:8000 yuzutech/kroki
 ```
 
 ## `kroki_render.py` (preferred)
@@ -24,7 +24,7 @@ cat diagram.puml | python3 kroki_render.py > diagram.svg
 | `-t`, `--diagram-type` | Kroki backend (default: `plantuml`) |
 | `-f`, `--format` | Output format (default: from `-o` extension, else `svg`) |
 | `-o`, `--output` | Output file (default: input path with new extension; stdout for stdin) |
-| `--base` | Kroki base URL (default: `$KROKI_URL` or `http://localhost:8000`) |
+| `--base` | Kroki base URL (default: `$KROKI_URL` or `http://localhost:8090`) |
 
 Exit codes: `0` ok (prints output path), `2` Kroki rejected the diagram (message on stderr), `3` server unreachable.
 
@@ -80,6 +80,6 @@ cat diagram.puml | python kroki_url.py -t plantuml
 | --- | --- |
 | `-t`, `--diagram-type` | Kroki backend path segment (default: `plantuml`) |
 | `-f`, `--format` | Output format segment (default: `svg`) |
-| `--base` | Kroki base URL (default: `$KROKI_URL` or `http://localhost:8000`) |
+| `--base` | Kroki base URL (default: `$KROKI_URL` or `http://localhost:8090`) |
 
 Positional `file` is optional; if omitted, diagram text is read from **stdin** (not from an interactive TTY).
