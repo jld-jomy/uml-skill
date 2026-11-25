@@ -10,7 +10,7 @@
 
 When the **[uml-mcp](https://github.com/antoinebou12/uml-mcp)** server is connected, agents should call **`generate_uml`**, **`validate_uml`**, **`list_diagram_types`**, and **`generate_uml_batch`** as needed to return **Kroki-backed URLs** (and optional playground links). 
 
-Without MCP, you can still build a Kroki GET URL locally with **[scripts/kroki_url.py](scripts/kroki_url.py)** (see [scripts/README.md](scripts/README.md)).
+Without MCP, render diagrams through a local Docker Kroki server with **[scripts/kroki_render.py](scripts/kroki_render.py)** (see [scripts/README.md](scripts/README.md)).
 
 **Canonical Smithery listing:** [diagramming-uml on Smithery](https://smithery.ai/skills/antoinebou12/uml) (`antoinebou12/uml`).
 

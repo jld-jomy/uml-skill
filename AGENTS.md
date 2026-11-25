@@ -6,7 +6,7 @@ This repository is the **diagramming-uml** portable skill bundle (`name` in [SKI
 
 1. **[SKILL.md](SKILL.md)** — full skill: activation, [plan-then-generate workflow](SKILL.md#plan-then-generate-workflow), `generate_uml` / `validate_uml` / `list_diagram_types`, Kroki context, authoring rules.
 2. **[references/DIAGRAM-TYPES.md](references/DIAGRAM-TYPES.md)** — when you need extended intent → `diagram_type` tables; always still confirm keys with **`uml://types`** on the connected server.
-3. **[scripts/README.md](scripts/README.md)** — when **uml-mcp** is not available and you only need a Kroki GET URL via **`kroki_url.py`**.
+3. **[scripts/README.md](scripts/README.md)** — when **uml-mcp** is not available: render via the local Docker Kroki server with **`kroki_render.py`**.
 
 Install and Smithery paths: **[README.md](README.md)**.
 

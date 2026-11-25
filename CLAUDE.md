@@ -8,7 +8,7 @@ This repo ships the **diagramming-uml** agent skill for text-based UML and diagr
 2. **[README.md](README.md)** — how to install the skill (Smithery, Cursor, clone).
 3. **[AGENTS.md](AGENTS.md)** — same read order as this file, plus deep links into the plan-then-generate sections of **SKILL.md**.
 
-Optional on demand: **[references/DIAGRAM-TYPES.md](references/DIAGRAM-TYPES.md)**, **[scripts/README.md](scripts/README.md)** (Kroki URL helper without MCP).
+Optional on demand: **[references/DIAGRAM-TYPES.md](references/DIAGRAM-TYPES.md)**, **[scripts/README.md](scripts/README.md)** (render via local Docker Kroki without MCP).
 
 ## Smithery
 

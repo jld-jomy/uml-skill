@@ -20,7 +20,7 @@ metadata:
 - **[AGENTS.md](AGENTS.md)** — read order for agents; links into this file and optional material.
 - **[CLAUDE.md](CLAUDE.md)** — Claude Code entrypoint; same read order as **AGENTS.md**.
 - **[references/DIAGRAM-TYPES.md](references/DIAGRAM-TYPES.md)** — extended intent → `diagram_type` (still confirm with **`uml://types`**).
-- **[scripts/README.md](scripts/README.md)** — **`scripts/kroki_url.py`** when MCP is unavailable.
+- **[scripts/README.md](scripts/README.md)** — **`scripts/kroki_render.py`** (render via local Docker Kroki) when MCP is unavailable.
 
 # UML (text diagrams + uml-mcp)
 
@@ -138,7 +138,7 @@ When several types fit, pick the one the user named; otherwise prefer the type w
 
 [Kroki](https://kroki.io/) is a unified HTTP API that renders many text diagram languages to SVG, PNG, PDF, etc. **uml-mcp** maps each supported **`diagram_type`** to a Kroki backend and may report a **`source`** field such as `kroki`, `plantuml_server`, or `mermaid_ink` depending on configuration and fallbacks.
 
-**Logical vs Kroki path:** **`scripts/kroki_url.py`** takes a Kroki **URL path segment** (e.g. `plantuml`, `mermaid`, `d2`). uml-mcp **`generate_uml`** uses **logical** keys from **`uml://types`** (e.g. `class`, `sequence` → prepared PlantUML). Prefer MCP tools when connected; use the script only when MCP is unavailable.
+**Logical vs Kroki path:** **`scripts/kroki_render.py`** / **`scripts/kroki_url.py`** take a Kroki **URL path segment** (e.g. `plantuml`, `mermaid`, `d2`). uml-mcp **`generate_uml`** uses **logical** keys from **`uml://types`** (e.g. `class`, `sequence` → prepared PlantUML). Prefer MCP tools when connected; use the script only when MCP is unavailable.
 
 ### MCP tools and resources
 
@@ -155,9 +155,26 @@ For **presentation intents** (timeline vs roadmap, Venn, quadrant, ER, architect
 
 ## When uml-mcp is not available
 
-- Output diagram **source** in a fenced code block (`plantuml`, `mermaid`, `d2`, …).
-- Mention that **uml-mcp** with Kroki would produce a live **`url`** for the same source when the server is connected.
-- For proprietary GUI tools (Draw.io, Lucidchart, etc.), give **structured steps** or export hints, or offer **PlantUML/Mermaid/D2** as a portable alternative if the user asked for code.
+Render through the **local Kroki Docker server**. Never send diagram source to the public `https://kroki.io` service.
+
+1. Save the source to a file next to where it belongs (e.g. `docs/diagrams/<name>.puml`, `.mmd`, `.d2`).
+2. Make sure the server is running (idempotent):
+   ```bash
+   docker start kroki 2>/dev/null || docker run -d --name kroki -p 8000:8000 yuzutech/kroki
+   ```
+   The core backends (plantuml, c4plantuml, d2, graphviz, ditaa, …) are in this one image. **Mermaid**, **BPMN**, **Excalidraw** and **diagrams.net** need companion containers (`yuzutech/kroki-mermaid`, `yuzutech/kroki-bpmn`, …); see the Kroki install docs if one of those returns an error.
+3. Render with **`scripts/kroki_render.py`** (stdlib only; POSTs to `$KROKI_URL`, default `http://localhost:8000`):
+   ```bash
+   python3 <skill-dir>/scripts/kroki_render.py -t plantuml docs/diagrams/<name>.puml   # writes <name>.svg
+   python3 <skill-dir>/scripts/kroki_render.py -t mermaid -o out.png diagram.mmd
+   ```
+   - Exit code **2**: the diagram has a syntax error. The Kroki message is on stderr; fix the source and rerun.
+   - Exit code **3**: the server is unreachable. Run the Docker command from step 2 (or ask the user to start Docker).
+4. Present the **path of the rendered file** and keep a short copy of the source in the reply.
+
+If Docker is unavailable, output the source in a fenced code block (`plantuml`, `mermaid`, `d2`, …) and tell the user how to start the local server. Do not fall back to kroki.io.
+
+For proprietary GUI tools (Draw.io, Lucidchart, etc.), give **structured steps** or export hints, or offer **PlantUML/Mermaid/D2** as a portable alternative if the user asked for code.
 
 ## Authoring rules (always)
 
@@ -185,6 +202,6 @@ Contributors who work inside the **uml-mcp** repo may also use [`.cursor/skills/
 
 Optional directories (add when needed):
 
-- **`scripts/`** — small helpers agents can run. **`scripts/kroki_url.py`** prints a Kroki GET URL from diagram source (file or stdin); use when MCP is not available. See **`scripts/README.md`**.
+- **`scripts/`** — small helpers agents can run. **`scripts/kroki_render.py`** renders diagram source to a file via the local Docker Kroki server; **`scripts/kroki_url.py`** prints a GET URL for that same local server. Use when MCP is not available. See **`scripts/README.md`**.
 - **`references/`** — extra docs on demand (e.g. **[references/DIAGRAM-TYPES.md](references/DIAGRAM-TYPES.md)**).
 - **`assets/`** — templates, images, or data files.
